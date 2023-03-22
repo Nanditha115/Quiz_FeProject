@@ -5,10 +5,16 @@ import quizData from './data/quiz.json'
 import { useState } from 'react';
 import End from './components/End';
 import Modal from './components/Modal';
+import Welcome from './components/Welcome';
+import SignUp from './components/SignUp';
+import {BrowserRouter,Routes,Route} from 'react-router-dom';
+import Home from './components/Home';
+import UserDetails from './components/UserDetails';
+
 
 const App = () => {
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(-1);
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -25,11 +31,24 @@ const App = () => {
     setActiveQuestion(0);
     setAnswers([]);
     setRepeatedQues([]);
+    setStep(0);
+  }
+
+  const onRules = () => {
     setStep(1);
+  }
+
+  const onSave = () => {
+    setStep(0);
   }
 
   return (
     <div className="App">
+
+      {step === -1 && <UserDetails  setStep = {setStep} />}
+
+      {step === 0 && <Home onRules={onRules}/> }
+
       {step === 1 && <Start onQuizStart={quizStartHandler}/>}
 
       {step ===2 && <Questions
@@ -57,6 +76,7 @@ const App = () => {
         data={quizData.data}
         repeatedQues={repeatedQues}
       />}
+    
     </div>
   );
 }
